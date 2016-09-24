@@ -66,6 +66,15 @@ app.factory('dbService', function() {
                     commentsArray.push(d);
                 }
                 c.details.comments = commentsArray;
+
+
+                var count = 0;
+                var uc = service.getUserCaseInfo(c);
+                for(var sid in uc.step) {
+                    if(uc.step[sid])
+                        count++;
+                }
+                c.progress = "Wykonane kroki: " + count + "/" + c.details.steps.length;
             }
 
             if(callback != null)

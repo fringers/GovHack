@@ -37,7 +37,7 @@
                      <md-icon class="material-icons">
                         settings
                      </md-icon>
-                    Settings
+                    Ustawienia
                   </md-button>
                 </md-menu-item>
                  <md-menu-item>
@@ -45,7 +45,7 @@
                      <md-icon class="material-icons">
                         power_settings_new
                      </md-icon>
-                    Logout
+                    Wyloguj
                   </md-button>
                 </md-menu-item>
             </md-menu-content>
@@ -170,8 +170,8 @@
                   <md-list-item ng-repeat="item in cases track by item.id" class="md-3-line" style="maxheight: 100px;">
                       <div class="md-list-item-text" ng-click="viewDetails(item, $index)">
                           <h3>{{ item.name }}</h3>
-                          <h4></h4>
-                          <p>sdfsdfsdf</p>
+                          <h4>{{item.progress}}</h4>
+                          <p>{{item.deadlineStringToShow ? "Planowany termin: " + item.deadlineStringToShow : ""}}</p>
                       </div>
                       <md-button class="md-icon-button md-secondary md-warn" ng-click="remove($index)">
                           <md-icon class="material-icons">

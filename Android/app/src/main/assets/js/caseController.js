@@ -27,7 +27,8 @@ app.controller('caseController', function($rootScope, $scope, $mdDialog, dbServi
 
     $scope.saveUserCase = function() {
         $scope.editNr = false;
-        $scope.userCase.deadlineString = "" + $scope.userCase.deadline;
+        if($scope.userCase.deadline)
+            $scope.userCase.deadlineString = "" + $scope.userCase.deadline;
         saveUserCase();
     };
 

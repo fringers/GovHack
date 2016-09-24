@@ -80,7 +80,7 @@ app.controller('selectCaseController', function($rootScope, $scope, $mdDialog, d
 		var lowercaseQuery = angular.lowercase(query);
 
 		return function filterFn(c) {
-		    if(c.category != $rootScope.category.id)
+		    if(c.categoryId != $rootScope.category.id)
 		        return false;
 
 			for (var i = 0, len = $scope.selectedCases.length; i < len; i++) {

@@ -40,6 +40,10 @@ app.controller('mainController', function($rootScope, $scope, $mdDialog, dbServi
             });
 
             c.userCase = userCases[id];
+            if(c.userCase.deadlineString)
+            {
+                c.deadlineStringToShow = new Date(c.userCase.deadlineString).toISOString().slice(0, 10);
+            }
 
             result.push(c);
         }
