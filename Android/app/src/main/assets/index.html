@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=API_KEY"></script>
+  <script type="text/javascript" src="gmaps.js"></script>
+  <script type="text/javascript" src="mymaps.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+	myMaps.init();
+	var p1 = new point(52.213663, 21.003197);
+	var p2 = new point(52.232501, 21.024229);
+
+	var m1 = myMaps.addMarker(p1, "Test");
+	var m2 = myMaps.addMarkerWithInfoWindow(p2, "Test", "<h1>TEST</h1>");
+	//myMaps.removeMarker(m1);
+	//myMaps.removeAllMarkers();
+	myMaps.drawRoute(p1, p2);
+	//myMaps.geolocate();
+
+	myMaps.getTransit();
+    });
+
+    function backButton()
+    {
+      console.log("backButton");
+    }
+
+  </script>
+</head>
+<body>
+  <div id="map" style="width: 95%;height: 350px;"></div>
+</body>
+</html>
