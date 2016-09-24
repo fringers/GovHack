@@ -1,35 +1,378 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=API_KEY"></script>
-  <script type="text/javascript" src="gmaps.js"></script>
-  <script type="text/javascript" src="mymaps.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function(){
-	myMaps.init();
-	var p1 = new point(52.213663, 21.003197);
-	var p2 = new point(52.232501, 21.024229);
-
-	var m1 = myMaps.addMarker(p1, "Test");
-	var m2 = myMaps.addMarkerWithInfoWindow(p2, "Test", "<h1>TEST</h1>");
-	//myMaps.removeMarker(m1);
-	//myMaps.removeAllMarkers();
-	myMaps.drawRoute(p1, p2);
-	//myMaps.geolocate();
-
-	myMaps.getTransit();
-    });
-
-    function backButton()
-    {
-      console.log("backButton");
-    }
-
-  </script>
+<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  
+  <link rel="stylesheet" href="style.css">
+  
 </head>
-<body>
-  <div id="map" style="width: 95%;height: 350px;"></div>
+<body ng-app="HackApp" ng-controller="indexController" ng-cloak>
+
+  <!-- App content -->
+  <div style="max-height: 100%;" >
+
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button ng-click="sideNavToggle()" aria-label="Sidenav" class="md-icon-button">
+                asd
+            </md-button>
+            <md-button ng-show="canNavigateBack()" ng-click="navigateBack()" aria-label="Go Back" class="md-icon-button">
+              <md-icon class="material-icons">
+                arrow_back
+              </md-icon>
+            </md-button>
+          <h3 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 100%;">
+            <span >{{title}}</span>
+          </h3>
+          <span flex></span>
+          <md-menu ng-if="user">
+            <md-button class="md-icon-button" aria-label="Menu" ng-click="openMenu($mdOpenMenu, $event)">
+              <md-icon class="material-icons">
+                more_vert
+              </md-icon>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="navigate('settings')">
+                     <md-icon class="material-icons">
+                        settings
+                     </md-icon>
+                    Settings
+                  </md-button>
+                </md-menu-item>
+                 <md-menu-item>
+                  <md-button ng-click="logout($event)">
+                     <md-icon class="material-icons">
+                        power_settings_new
+                     </md-icon>
+                    Logout
+                  </md-button>
+                </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </md-toolbar>
+
+      <md-content style="max-height: calc(100% - 60px);" flex>
+        <div ng-include src="currentTemplate" ng-cloak></div>
+      </md-content>
+  </div>
+  <!-- App content -->
+
+  <script   src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+  
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+
+
+  <script src="js/config.js"></script>
+
+  <script src="js/main.js"></script>
+
+  <script src="js/databaseService.js"></script>
+
+  <script src="js/loginController.js"></script>
+  <script src="js/registerController.js"></script>
+  <script src="js/mainController.js"></script>
+  <script src="js/settingsController.js"></script>
+  <script src="js/selectCategoryController.js"></script>
+  <script src="js/selectCaseController.js"></script>
+  <script src="js/caseController.js"></script>
+  <script src="js/navigateController.js"></script>
+
+  <script>
+      var map;
+      function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: -34.397, lng: 150.644},
+              zoom: 8
+          });
+      }
+  </script>
+
+  <script type="text/ng-template" id="login.tpl">
+	<div ng-controller="loginController" layout="column" ng-cloak class="md-inline-form" ng-cloak>
+		<md-content layout-padding>
+			<form name="loginForm">
+				<md-input-container class="md-block">
+					<label>Email</label>
+					<input ng-model="userInput.email" type="text" name="email" required ng-pattern="/^.+@.+\..+$/" md-no-asterisk>
+					<div ng-messages="loginForm.email.$error">
+					  <div ng-message="required">This is required.</div>
+					  <div ng-message="pattern">
+						Your email must look like an e-mail address.
+					  </div>
+					</div>	
+				</md-input-container>
+				<md-input-container class="md-block">
+					<label>Password</label>
+					<input ng-model="userInput.password" type="password" name="password" required md-no-asterisk>
+					<div ng-messages="loginForm.password.$error">
+					  <div ng-message="required">This is required.</div>
+					</div>	
+				</md-input-container>
+				<md-button class="md-primary" ng-click="navigate('register')">Register</md-button>
+				<md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
+			</form>
+		</md-content>
+	</div>
+  </script>
+  
+  <script type="text/ng-template" id="register.tpl">
+	<div ng-controller="registerController" layout="column" ng-cloak class="md-inline-form" ng-cloak>
+		<md-content layout-padding>
+			<form name="registerForm">
+				<md-input-container class="md-block">
+					<label>Email</label>
+					<input ng-model="userInput.email" type="email" name="email" required ng-pattern="/^.+@.+\..+$/" md-no-asterisk>
+					<div ng-messages="registerForm.email.$error">
+					  <div ng-message="required">This is required.</div>
+					  <div ng-message="pattern">
+						Your email must look like an e-mail address.
+					  </div>
+					</div>	
+				</md-input-container>
+				<md-input-container class="md-block">
+					<label>Password</label>
+					<input ng-model="userInput.password" type="password" name="password" required md-no-asterisk>
+					<div ng-messages="registerForm.password.$error">
+					  <div ng-message="required">This is required.</div>
+					</div>	
+				</md-input-container>
+				<md-button class="md-raised md-primary" ng-click="createAccount()">Register</md-button>
+			</form>
+		</md-content>
+	</div>
+  </script>
+
+  <script type="text/ng-template" id="main.tpl">
+      <div ng-controller="mainController" layout="column" ng-cloak>
+          <md-content layout-padding>
+
+              <md-list>
+                  <md-subheader class="md-no-sticky">
+                      Posiadasz {{cases.length}} spraw do załatwienia
+                      <md-button class="md-raised md-primary" ng-click="navigate('navigate')">
+                          Nawiguj
+                      </md-button>
+                  </md-subheader>
+                  <md-list-item ng-repeat="item in cases track by item.id" class="md-3-line" style="maxheight: 100px;">
+                      <div class="md-list-item-text" ng-click="viewDetails(item, $index)">
+                          <h3>{{ item.name }}</h3>
+                          <h4>sdfsdfsdf</h4>
+                          <p>sdfsdfsdf</p>
+                      </div>
+                      <md-button class="md-icon-button md-secondary md-warn" ng-click="remove($index)">
+                          <md-icon class="material-icons">
+                              delete
+                          </md-icon>
+                      </md-button>
+                      <md-divider ng-if="!$last"></md-divider>
+                  </md-list-item>
+              </md-list>
+
+              <md-button class="md-primary md-fab md-fab-bottom-right" ng-click="navigate('selectCategory')">
+                  <md-icon class="material-icons">
+                      add
+                  </md-icon>
+              </md-button>
+
+          </md-content>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="selectCategory.tpl">
+      <div ng-controller="selectCategoryController" layout="column" ng-cloak>
+          <md-content layout-padding>
+              <div>
+
+                  <md-autocomplete
+                          md-selected-item="selectedItem"
+                          md-selected-item-change="selectedItemChange(item)"
+                          md-search-text="searchText"
+                          md-items="item in querySearch(searchText)"
+                          md-item-text="item.name"
+                          placeholder="Szukaj..."
+                          md-no-cache="true"
+                          md-menu-class="autocomplete-custom-template">
+                      <md-item-template>
+						<span class="item-title">
+							<span md-highlight-text="searchText" md-highlight-flags="ig">
+								{{item.name}}
+							</span>
+						</span>
+                      </md-item-template>
+                      <md-not-found>
+                          Nie znaleziono pasującej sprawy :(
+                      </md-not-found>
+                  </md-autocomplete>
+
+              </div>
+              <div >
+                  <md-grid-list
+                          md-cols-xs="2" md-cols-sm="3" md-cols-md="4" md-cols-gt-md="6"
+                          md-row-height-gt-md="1:1" md-row-height="2:2"
+                          md-gutter="12px" md-gutter-gt-sm="8px" >
+
+                      <md-grid-tile ng-repeat="category in caseCategories track by category.id" ng-click="goToCategory(category)">
+                          <!--http://image.flaticon.com/icons/svg/148/148744.svg-->
+                          <!--<md-icon class="material-icons">-->
+                              <!--assignment-->
+                          <!--</md-icon>-->
+
+                          <!--<md-icon md-svg-src="http://image.flaticon.com/icons/svg/148/148744.svg" class="s48" aria-label="Cart"    ></md-icon>-->
+
+                          <img src="{{category.icon}}" style="width: 50%; height: 50%;"/>
+
+                          <md-grid-tile-footer>
+                              <h3>{{category.name}}</h3>
+                          </md-grid-tile-footer>
+                      </md-grid-tile>
+
+                  </md-grid-list>
+              </div>
+          </md-content>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="selectCase.tpl">
+	<div ng-controller="selectCaseController" layout="column" ng-cloak>
+		<md-content layout-padding>
+			<div>
+
+				<md-autocomplete
+					md-selected-item="selectedItem"
+					md-selected-item-change="selectedItemChange(item)"
+					md-search-text="searchText"
+					md-items="item in querySearch(searchText)"
+					md-item-text="item.name"
+					placeholder="Szukaj..."
+					md-no-cache="true"
+					md-menu-class="autocomplete-custom-template">
+					<md-item-template>
+						<span class="item-title">
+							<span md-highlight-text="searchText" md-highlight-flags="ig">
+								{{item.name}}
+							</span>
+						</span>
+					</md-item-template>
+					<md-not-found>
+						Nie znaleziono pasującej sprawy :(
+					</md-not-found>
+				</md-autocomplete>
+		  
+			</div>
+
+            <div>
+                <md-list ng-cloak>
+                    <md-list-item ng-repeat="case in cases track by case.id" style="margin-bottom: 20px;">
+
+                        <md-checkbox ng-disabled="checkedDisabled.indexOf(case.id) >= 0"
+                            class="md-primary"
+                            aria-label="Checkbox"
+                            ng-model="checked[case.id]">
+                        </md-checkbox>
+
+                        <p id="case-{{case.id}}"> {{case.name}} </p>
+
+                    </md-list-item>
+
+                </md-list>
+
+            </div>
+
+            <md-button class="md-primary md-fab md-fab-bottom-right" ng-click="confirm()">
+                <md-icon class="material-icons">
+                    done
+                </md-icon>
+            </md-button>
+		</md-content>
+	</div>
+  </script>
+
+  <script type="text/ng-template" id="caseDetails.tpl">
+      <div ng-controller="caseController" layout="column" ng-cloak>
+          <md-content layout-padding>
+              <h2 class="md-title">{{case.name}}</h2>
+              <p>
+                  Indywidualny numer sprawy:
+                  <br>
+                  <span ng-show="editNr">
+                      <md-input-container class="md-block" flex-gt-xs>
+                          <label>Numer</label>
+                          <input ng-model="userCase.number">
+                          <md-button md-no-ink class="md-primary" ng-click="saveUserCase()">save</md-button>
+                      </md-input-container>
+                  </span>
+                  <span ng-show="!editNr">
+                      <span ng-if="userCase.number">
+                          {{userCase.number}}
+                          <md-button md-no-ink class="md-primary" ng-click="editCaseNumber()">edit</md-button>
+                      </span>
+                      <span ng-if="!userCase.number">
+                          -
+                          <md-button md-no-ink class="md-primary" ng-click="editCaseNumber()">add</md-button>
+                      </span>
+                  </span>
+              </p>
+
+              <md-list ng-cloak>
+
+                  <md-subheader class="md-no-sticky">Wymagane dokumenty:</md-subheader>
+                  <md-list-item ng-repeat="doc in case.details.documents">
+                      <p> {{ doc.name }} </p>
+                      <md-checkbox class="md-secondary"
+                                   ng-model="userCase.documents[doc.id]"
+                                   ng-change="saveUserCase()">
+                      </md-checkbox>
+                  </md-list-item>
+              </md-list>
+
+              <md-list ng-cloak>
+
+                  <md-subheader class="md-no-sticky">Kroki:</md-subheader>
+                  <md-list-item ng-repeat="step in case.details.steps">
+                      <p> {{ step.name }} </p>
+                      <md-checkbox class="md-secondary"
+                                   ng-model="userCase.step[step.id]"
+                                   ng-change="saveUserCase()">
+                      </md-checkbox>
+                  </md-list-item>
+              </md-list>
+
+          </md-content>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="navigate.tpl">
+      <div ng-controller="navigateController" layout="column" ng-cloak>
+          <md-content layout-padding>
+              <h3>Navigacja</h3>
+          </md-content>
+
+          <div id="map" style="width: 100%; height: 100%;"></div>
+
+      </div>
+  </script>
+  
+  <script type="text/ng-template" id="settings.tpl">
+	<div ng-controller="settingsController" layout="column" ng-cloak>
+		<md-content layout-padding>
+			Hello {{user.email}}!
+		</md-content>
+	</div>
+  </script>
+
 </body>
 </html>
