@@ -96,7 +96,7 @@ app.controller('selectCaseController', function($rootScope, $scope, $mdDialog, d
         for(var id in $scope.cases) {
             var c = $scope.cases[id];
 
-            if(!$scope.checked[c.id] || $scope.checkedDisabled[c.id])
+            if(!$scope.checked[c.id] || $scope.checkedDisabled.indexOf(c.id) >= 0)
                 continue;
 
             dbService.addUserCase(c);
@@ -148,7 +148,7 @@ app.controller('selectCaseController', function($rootScope, $scope, $mdDialog, d
             setTimeout(function() {
                 var elem = $(elemId);
                 var offset = elem.offset();
-                $('html,body').animate({
+                $("html,body").animate({
                         scrollTop: offset.top},
                     'slow');
             }, 100);
@@ -174,7 +174,7 @@ app.controller('selectCaseController', function($rootScope, $scope, $mdDialog, d
             if(c == null)
                 continue;
 
-            if(!$rootScope.caseToCheck) {
+            if(!$rootScope.caseToCheck || $rootScope.caseToCheck.id != c.id) {
                 $scope.checkedDisabled.push(c.id);
                 $scope.checked[c.id] = true;
             }

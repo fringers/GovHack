@@ -16,9 +16,6 @@
 
       <md-toolbar>
         <div class="md-toolbar-tools">
-            <md-button ng-click="sideNavToggle()" aria-label="Sidenav" class="md-icon-button">
-                asd
-            </md-button>
             <md-button ng-show="canNavigateBack()" ng-click="navigateBack()" aria-label="Go Back" class="md-icon-button">
               <md-icon class="material-icons">
                 arrow_back
@@ -63,7 +60,9 @@
   <!-- App content -->
 
   <script   src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+
   <!-- Angular Material requires Angular.js Libraries -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
@@ -75,6 +74,7 @@
   
   <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
 
+  <!--<script src="https://maps.googleapis.com/maps/api/js?key="></script>-->
 
   <script src="js/config.js"></script>
 
@@ -92,13 +92,13 @@
   <script src="js/navigateController.js"></script>
 
   <script>
-      var map;
-      function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: -34.397, lng: 150.644},
-              zoom: 8
-          });
-      }
+//      var map;
+//      function initMap() {
+//          map = new google.maps.Map(document.getElementById('map'), {
+//              center: {lat: -34.397, lng: 150.644},
+//              zoom: 8
+//          });
+//      }
   </script>
 
   <script type="text/ng-template" id="login.tpl">
@@ -109,21 +109,21 @@
 					<label>Email</label>
 					<input ng-model="userInput.email" type="text" name="email" required ng-pattern="/^.+@.+\..+$/" md-no-asterisk>
 					<div ng-messages="loginForm.email.$error">
-					  <div ng-message="required">This is required.</div>
+					  <div ng-message="required">To pole jest wymagane!</div>
 					  <div ng-message="pattern">
-						Your email must look like an e-mail address.
+						Wpisz poprawny adres email!
 					  </div>
 					</div>	
 				</md-input-container>
 				<md-input-container class="md-block">
-					<label>Password</label>
+					<label>Hasło</label>
 					<input ng-model="userInput.password" type="password" name="password" required md-no-asterisk>
 					<div ng-messages="loginForm.password.$error">
-					  <div ng-message="required">This is required.</div>
+					  <div ng-message="required">To pole jest wymagane!</div>
 					</div>	
 				</md-input-container>
-				<md-button class="md-primary" ng-click="navigate('register')">Register</md-button>
-				<md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
+				<md-button class="md-primary" ng-click="navigate('register')">Zarejestruj</md-button>
+				<md-button class="md-raised md-primary" ng-click="login()">Zaloguj</md-button>
 			</form>
 		</md-content>
 	</div>
@@ -137,20 +137,20 @@
 					<label>Email</label>
 					<input ng-model="userInput.email" type="email" name="email" required ng-pattern="/^.+@.+\..+$/" md-no-asterisk>
 					<div ng-messages="registerForm.email.$error">
-					  <div ng-message="required">This is required.</div>
+					  <div ng-message="required">To pole jest wymagane!</div>
 					  <div ng-message="pattern">
-						Your email must look like an e-mail address.
+                          Wpisz poprawny adres email!
 					  </div>
 					</div>	
 				</md-input-container>
 				<md-input-container class="md-block">
-					<label>Password</label>
+					<label>Hasło</label>
 					<input ng-model="userInput.password" type="password" name="password" required md-no-asterisk>
 					<div ng-messages="registerForm.password.$error">
-					  <div ng-message="required">This is required.</div>
+					  <div ng-message="required">To pole jest wymagane!</div>
 					</div>	
 				</md-input-container>
-				<md-button class="md-raised md-primary" ng-click="createAccount()">Register</md-button>
+				<md-button class="md-raised md-primary" ng-click="createAccount()">Zarejestruj</md-button>
 			</form>
 		</md-content>
 	</div>
@@ -170,7 +170,7 @@
                   <md-list-item ng-repeat="item in cases track by item.id" class="md-3-line" style="maxheight: 100px;">
                       <div class="md-list-item-text" ng-click="viewDetails(item, $index)">
                           <h3>{{ item.name }}</h3>
-                          <h4>sdfsdfsdf</h4>
+                          <h4></h4>
                           <p>sdfsdfsdf</p>
                       </div>
                       <md-button class="md-icon-button md-secondary md-warn" ng-click="remove($index)">
@@ -305,49 +305,119 @@
       <div ng-controller="caseController" layout="column" ng-cloak>
           <md-content layout-padding>
               <h2 class="md-title">{{case.name}}</h2>
-              <p>
-                  Indywidualny numer sprawy:
-                  <br>
-                  <span ng-show="editNr">
-                      <md-input-container class="md-block" flex-gt-xs>
-                          <label>Numer</label>
-                          <input ng-model="userCase.number">
-                          <md-button md-no-ink class="md-primary" ng-click="saveUserCase()">save</md-button>
-                      </md-input-container>
-                  </span>
-                  <span ng-show="!editNr">
-                      <span ng-if="userCase.number">
-                          {{userCase.number}}
-                          <md-button md-no-ink class="md-primary" ng-click="editCaseNumber()">edit</md-button>
-                      </span>
-                      <span ng-if="!userCase.number">
-                          -
-                          <md-button md-no-ink class="md-primary" ng-click="editCaseNumber()">add</md-button>
-                      </span>
-                  </span>
-              </p>
 
               <md-list ng-cloak>
+                  <md-subheader class="md-no-sticky" ng-click="showDeadline = !showDeadline">
+                      <span ng-show="!showDeadline">+</span>
+                      <span ng-show="showDeadline">-</span>
+                      <md-icon class="material-icons">
+                          date_range
+                      </md-icon>
+                      Termin
+                  </md-subheader>
+                  <md-list-item style="font-size: 12px;" ng-show="showDeadline">
+                      <p>
+                          <md-input-container>
+                              <label>Termin:</label>
+                              <md-datepicker ng-model="userCase.deadline" ng-change="saveUserCase()"></md-datepicker>
+                          </md-input-container>
+                      </p>
+                  </md-list-item>
 
-                  <md-subheader class="md-no-sticky">Wymagane dokumenty:</md-subheader>
-                  <md-list-item ng-repeat="doc in case.details.documents">
-                      <p> {{ doc.name }} </p>
-                      <md-checkbox class="md-secondary"
+                  <md-subheader class="md-no-sticky" ng-click="showCaseNumber = !showCaseNumber">
+                      <span ng-show="!showCaseNumber">+</span>
+                      <span ng-show="showCaseNumber">-</span>
+                      <md-icon class="material-icons">
+                          perm_identity
+                      </md-icon>
+                      Twój numer sprawy
+                  </md-subheader>
+                  <md-list-item style="font-size: 12px;" ng-show="showCaseNumber" ng-if="editNr">
+                      <p>
+                          <md-input-container class="md-block" flex-gt-xs>
+                              <label>Numer</label>
+                              <input ng-model="userCase.number">
+                              <md-button md-no-ink class="md-primary" ng-click="saveUserCase()">zapisz</md-button>
+                          </md-input-container>
+                      </p>
+                  </md-list-item>
+                  <md-list-item style="font-size: 12px;" ng-show="showCaseNumber" ng-if="!editNr && userCase.number">
+                      <p ng-if="!editNr && userCase.number" ng-click="editCaseNumber()">
+                          {{userCase.number}}
+                      </p>
+                  </md-list-item>
+                  <md-list-item style="font-size: 12px;" ng-show="showCaseNumber" ng-if="!editNr && !userCase.number">
+                      <p ng-if="!editNr && !userCase.number" ng-click="editCaseNumber()">
+                          <md-button class="md-raised md-primary">dodaj</md-button>
+                      </p>
+                  </md-list-item>
+
+                  <md-subheader class="md-no-sticky" ng-click="showResponseTime = !showResponseTime">
+                      <span ng-show="!showResponseTime">+</span>
+                      <span ng-show="showResponseTime">-</span>
+                      <md-icon class="material-icons">
+                          schedule
+                      </md-icon>
+                      Maksymalny czas oczekiwania
+                  </md-subheader>
+                  <md-list-item style="font-size: 12px;" ng-show="showResponseTime">
+                      <p> {{case.details.responseTime}} </p>
+                  </md-list-item>
+
+                  <md-subheader class="md-no-sticky" ng-click="showDocs = !showDocs">
+                      <span ng-show="!showDocs">+</span>
+                      <span ng-show="showDocs">-</span>
+                      <md-icon class="material-icons">
+                          list
+                      </md-icon>
+                      Wymagane dokumenty
+                  </md-subheader>
+                  <md-list-item ng-repeat="doc in case.details.documents" style="font-size: 12px;" ng-show="showDocs">
+                      <md-checkbox class="md-primary"
                                    ng-model="userCase.documents[doc.id]"
                                    ng-change="saveUserCase()">
                       </md-checkbox>
+                      <p> {{$index + 1}}. {{ doc.name }} </p>
                   </md-list-item>
-              </md-list>
 
-              <md-list ng-cloak>
-
-                  <md-subheader class="md-no-sticky">Kroki:</md-subheader>
-                  <md-list-item ng-repeat="step in case.details.steps">
-                      <p> {{ step.name }} </p>
-                      <md-checkbox class="md-secondary"
+                  <md-subheader class="md-no-sticky" ng-click="showSteps = !showSteps">
+                      <span ng-show="!showSteps">+</span>
+                      <span ng-show="showSteps">-</span>
+                      <md-icon class="material-icons">
+                          assignment_turned_in
+                      </md-icon>
+                      Kroki
+                  </md-subheader>
+                  <md-list-item ng-repeat="step in case.details.steps" style="font-size: 12px;" ng-show="showSteps">
+                      <md-checkbox class="md-primary"
                                    ng-model="userCase.step[step.id]"
                                    ng-change="saveUserCase()">
                       </md-checkbox>
+                      <p> {{$index + 1}}. {{ step.name }} </p>
+                  </md-list-item>
+
+                  <md-subheader class="md-no-sticky" ng-click="showComments = !showComments">
+                      <span ng-show="!showComments">+</span>
+                      <span ng-show="showComments">-</span>
+                      <md-icon class="material-icons">
+                          comment
+                      </md-icon>
+                      Uwagi
+                  </md-subheader>
+                  <md-list-item ng-repeat="comment in case.details.comments" style="font-size: 12px;" ng-show="showComments">
+                      <p> {{$index + 1}}. {{ comment.name }} </p>
+                  </md-list-item>
+
+                  <md-subheader class="md-no-sticky" ng-click="showPayments = !showPayments">
+                      <span ng-show="!showPayments">+</span>
+                      <span ng-show="showPayments">-</span>
+                      <md-icon class="material-icons">
+                          attach_money
+                      </md-icon>
+                      Opłaty
+                  </md-subheader>
+                  <md-list-item style="font-size: 12px;" ng-show="showPayments">
+                      <p> {{case.details.payments}} </p>
                   </md-list-item>
               </md-list>
 

@@ -54,6 +54,18 @@ app.factory('dbService', function() {
                     stepsArray.push(d);
                 }
                 c.details.steps = stepsArray;
+
+                var commentsArray = [];
+                var comments = c.details.comments;
+                for (var id in comments) {
+                    var d = {
+                        name: comments[id],
+                        id: id
+                    };
+
+                    commentsArray.push(d);
+                }
+                c.details.comments = commentsArray;
             }
 
             if(callback != null)

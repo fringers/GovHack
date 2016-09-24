@@ -1,5 +1,11 @@
 var app = angular.module('HackApp', ['ngMaterial', 'ngMessages' ]);
 
+app.config(function($mdDateLocaleProvider) {
+    $mdDateLocaleProvider.formatDate = function(date) {
+        return moment(date).format('YYYY-MM-DD');
+    };
+});
+
 app.controller('indexController', function($rootScope, $scope, $mdSidenav, dbService) {
 
     initFirebase();
