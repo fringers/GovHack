@@ -35,7 +35,8 @@ app.controller('mapController', function($rootScope, $scope, $mdDialog) {
         myMaps.drawRoute(loc, {lat: $scope.department.localization.lat, lng: $scope.department.localization.lng});
 
         myMaps.getTransit(loc, {lat: $scope.department.localization.lat, lng: $scope.department.localization.lng}, function(result) {
-            $scope.steps = result;
+            $scope.steps = result.segLists;
+            $scope.stepsDur = result.dur;
 
             if (!$scope.$$phase)
                 $scope.$apply();
