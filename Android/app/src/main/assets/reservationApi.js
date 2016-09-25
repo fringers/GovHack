@@ -21,7 +21,6 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 		};
 
 		this.get_Obj = function(trObj, index) {
-			if(typeof trObj.getElementsByClassName('BTN_OK')[index] === 'undefined') return {};
 			var value0 = trObj.getElementsByClassName('BTN_OK')[index].getAttribute('value').split('-');
 			var slot0 = trObj.getElementsByClassName('sloty')[index].innerHTML.split('/');
 			return {
@@ -47,12 +46,14 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 				_.forEach(trs, tr => {
 					if(tr.innerHTML.indexOf("<th") > -1) return;
 					if(tr.getElementsByClassName('BTN_OK')[0] == null) return;
-					var o1 = this.get_Obj(tr,0);
-					var o2 = this.get_Obj(tr,1);
-					if(o1.current<o1.max)
-						array.push(o1);
-					if(o2.current<o2.max)
-						array.push(o2);
+					if(typeof tr.getElementsByClassName('BTN_OK')[0] !== 'undefined') {
+						var o1 = this.get_Obj(tr,0);
+						if(o1.current<o1.max) array.push(o1);
+					}
+					if(typeof tr.getElementsByClassName('BTN_OK')[1] !== 'undefined') {
+						var o2 = this.get_Obj(tr,1);
+						if(o2.current<o2.max) array.push(o2);
+					}
 				});
 				this.getReservationsListCallback(c_case.id, array);
 			})
