@@ -75,12 +75,54 @@ app.factory('dbService', function() {
                         count++;
                 }
                 c.progress = "Wykonane kroki: " + count + "/" + c.details.steps.length;
+
+
+                service.getLocationsByDetails(c.details);
             }
 
-            if(callback != null)
-                callback();
+            setTimeout(function() {
+                if (callback != null)
+                    callback();
+            }, 1000);
         });
     };
+
+    service.getLocationsByDetails = function(caseDetails, callback) {
+        var locs = caseDetails.locations;
+        caseDetails.departments = [];
+
+        for(var locId in locs) {
+            var loc = locs[locId];
+
+            firebase.database().ref('/locations/' + loc).once('value').then(function(data) {
+                var locData = data.val();
+
+                firebase.database().ref('/departments/' + locData.departmentId).once('value').then(function(data) {
+                    var dep = data.val();
+                    dep.id = locData.departmentId;
+                    assignLocationToDetails(caseDetails, locData, dep);
+
+                    if(callback != null)
+                        callback();
+                });
+            });
+        }
+    };
+
+    function assignLocationToDetails(caseDetails, locData, departmentData) {
+        for(var id in caseDetails.departments) {
+            var dep = caseDetails.departments[id];
+            if(dep.id == departmentData.id) {
+                dep.names.push(locData.name);
+                return;
+            }
+        }
+
+        departmentData.names = [];
+        departmentData.names.push(locData.name);
+        caseDetails.departments.push(departmentData);
+
+    }
 
     service.getUserCaseInfo = function(c) {
         for(var id in service._userCases) {

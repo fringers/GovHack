@@ -35,8 +35,11 @@ app.controller('mainController', function($rootScope, $scope, $mdDialog, dbServi
                 continue;
 
             dbService.getDetailsForCase(c, function() {
-                if (!$scope.$$phase)
-                    $scope.$apply();
+
+                setTimeout(function() {
+                    if (!$scope.$$phase)
+                        $scope.$apply();
+                }, 500);
             });
 
             c.userCase = userCases[id];

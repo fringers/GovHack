@@ -61,6 +61,7 @@
 
   <script   src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.1/lodash.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 
   <!-- Angular Material requires Angular.js Libraries -->
@@ -428,11 +429,22 @@
   <script type="text/ng-template" id="navigate.tpl">
       <div ng-controller="navigateController" layout="column" ng-cloak>
           <md-content layout-padding>
-              <h3>Navigacja</h3>
+              <md-list class="md-dense" ng-cloak>
+                  <div ng-repeat="item in cases track by item.id">
+                      <md-subheader class="md-no-sticky" ng-click="viewDetails(item)">{{item.name}}</md-subheader>
+
+                      <md-list-item class="md-3-line" ng-repeat="dep in item.details.departments track by dep.id">
+                          <div class="md-list-item-text" layout="column">
+                              <h3>{{ dep.name }}</h3>
+                              <h4>Osób w kolejce: {{ dep.queueData.liczbaKlwKolejce }}</h4>
+                              <p>Aktualny numer: {{ dep.queueData.aktualnyNumer }}</p>
+                          </div>
+                      </md-list-item>
+
+                      <md-divider></md-divider>
+                  </div>
+              </md-list>
           </md-content>
-
-          <div id="map" style="width: 100%; height: 100%;"></div>
-
       </div>
   </script>
   
