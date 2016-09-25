@@ -155,8 +155,8 @@ var myMaps = {
                     name = step.transit.line.vehicle.name;
                     short = step.transit.line.short_name;
                     time = step.transit.arrival_time.text;
-                    from = step.transit.arrival_stop.name;
-                    to = step.transit.departure_stop.name;
+                    to = step.transit.arrival_stop.name;
+                    from = step.transit.departure_stop.name;
                     var seg = new transitRoutSegment(icon, name, short, time, from, to);
                     segList.push(seg);
                 }
