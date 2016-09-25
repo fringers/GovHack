@@ -1,6 +1,6 @@
 
 app.controller('reservationController', function($rootScope, $scope, $mdDialog, dbService) {
-	$rootScope.title = "Rezerwacja";
+	$rootScope.title = "Twoje rezerwacje";
 
     $scope.cases = loadUserCases();
     dbService.onUserCasesUpdated(function() {
@@ -31,12 +31,7 @@ app.controller('reservationController', function($rootScope, $scope, $mdDialog, 
         var timeFrom = $scope.time.getHours() * 60 * 60 + $scope.time.getMinutes() * 60; // ilosc sekund po polnocy
 
         findBestReservations(day, timeFrom, toRegister, function(result) {
-            for(var id in result) {
-                var res = result[id];
-                res.date = $scope.date.getFullYear() + "-" +  $scope.date.getMonth() + "-" + $scope.date.getDate();
 
-                dbService.addUserReservation(res);
-            }
         });
     }
 

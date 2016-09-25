@@ -97,6 +97,7 @@
   <script src="js/caseController.js"></script>
   <script src="js/navigateController.js"></script>
   <script src="js/reservationController.js"></script>
+  <script src="js/userReservationController.js"></script>
 
   <script>
 //      var map;
@@ -532,6 +533,18 @@
               <div layout-gt-sm="row" style="text-align: center;">
                   <md-button class="md-raised md-warn" style="margin-top: 50px;" ng-click="reservation()">Zarezerwuj</md-button>
               </div>
+          </md-content>
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="userReservations.tpl">
+      <div ng-controller="userReservationsController" layout="column" ng-cloak>
+          <md-content layout-padding>
+              <md-list class="md-dense" ng-cloak ng-show="steps">
+                  <div ng-repeat="item in reservations">
+
+                  </div>
+              </md-list>
           </md-content>
       </div>
   </script>
