@@ -2,6 +2,8 @@ package com.olzone.hackgovapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.GeolocationPermissions;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,13 +29,16 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setDomStorageEnabled(true);
         webSettings.setDatabaseEnabled(true);
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setGeolocationEnabled(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setGeolocationDatabasePath( this.getFilesDir().getPath() );
+        webSettings.setAppCacheEnabled(true);
 
         webView.addJavascriptInterface(mWebInterface, "Android");
 
-        webView.setWebViewClient(new WebViewClient() {
-            public void onPageFinished(WebView view, String url) {
-                
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, false);
             }
         });
 
