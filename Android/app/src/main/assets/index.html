@@ -469,43 +469,42 @@
 
   <script type="text/ng-template" id="map.tpl">
       <div ng-controller="mapController" layout="column" style="min-width: 100%; min-height: 80%" ng-cloak>
-
           <div id="map" style="min-width: 100%; min-height: 50%"></div>
+          <div class="mapDetails">
+            <md-content layout-padding>
+                <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!steps">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
 
-          <md-content layout-padding>
-              <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!steps">
-                  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-              </div>
+                <md-list class="md-dense" ng-cloak ng-show="steps">
+                    <md-subheader class="md-no-sticky">
+                        Odległość: {{walkInfo.dist}}
+                    </md-subheader>
 
-              <md-list class="md-dense" ng-cloak ng-show="steps">
-                  <md-subheader class="md-no-sticky">
-                      Odległość: {{walkInfo.dist}}
-                  </md-subheader>
+                    <md-subheader class="md-no-sticky">
+                        <md-icon class="material-icons md-secondary">
+                            directions_walk
+                        </md-icon>
+                        {{walkInfo.dur}}
+                    </md-subheader>
 
-                  <md-subheader class="md-no-sticky">
-                      <md-icon class="material-icons md-secondary">
-                          directions_walk
-                      </md-icon>
-                      {{walkInfo.dur}}
-                  </md-subheader>
+                    <md-subheader class="md-no-sticky">
+                        <md-icon class="material-icons md-secondary">
+                            drive_eta
+                        </md-icon>
+                        {{driveInfo.dur}}
+                    </md-subheader>
 
-                  <md-subheader class="md-no-sticky">
-                      <md-icon class="material-icons md-secondary">
-                          drive_eta
-                      </md-icon>
-                      {{driveInfo.dur}}
-                  </md-subheader>
-
-                  <md-subheader class="md-no-sticky">
-                      Komunikacja miejska:
-                  </md-subheader>
-                  <md-list-item class="md-3-line" ng-repeat="step in steps">
-                      <img src="{{step.icon}}" />
-                      {{step.short}} o {{step.time}}: {{step.from}} -> {{step.to}}
-                  </md-list-item>
-              </md-list>
-          </md-content>
-
+                    <md-subheader class="md-no-sticky">
+                        Komunikacja miejska:
+                    </md-subheader>
+                    <md-list-item class="md-3-line" ng-repeat="step in steps">
+                        <img src="{{step.icon}}" />
+                        {{step.short}} o {{step.time}}: {{step.from}} -> {{step.to}}
+                    </md-list-item>
+                </md-list>
+            </md-content>
+          </div>
       </div>
   </script>
 
@@ -516,14 +515,13 @@
                   <h4 class="md-title">Zarejestruj się w kolejkach do wszystkich spraw</h4>
               </div>
               <div layout-gt-sm="row">
-
-                  <md-input-container>
+                  <md-input-container style="margin: 0px !important;">
                       <label>Termin:</label>
                       <md-datepicker ng-model="date"></md-datepicker>
                   </md-input-container>
               </div>
               <div layout-gt-sm="row">
-                  <md-input-container style="padding-left: 36px; padding-right: 0;">
+                  <md-input-container style="margin-left: 18px;">
                       <md-icon class="material-icons">
                           schedule
                       </md-icon>
@@ -531,8 +529,8 @@
                       <input type="time">
                   </md-input-container>
               </div>
-              <div layout-gt-sm="row">
-                  <md-button class="md-raised md-warn">Zarezerwuj</md-button>
+              <div layout-gt-sm="row" style="text-align: center;">
+                  <md-button class="md-raised md-warn" style="margin-top: 50px;">Zarezerwuj</md-button>
               </div>
           </md-content>
       </div>

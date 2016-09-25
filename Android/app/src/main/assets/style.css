@@ -55,3 +55,16 @@ md-virtual-repeat-container {
   visibility: hidden;
   opacity: 0;
 }
+
+.mapDetails {
+  overflow-y: scroll; 
+  max-height: 38%;
+}
+
+.mapDetails .md-no-sticky .md-subheader-inner {
+  padding: 10px;
+}
+
+.mapDetails .layout-padding {
+  padding: 0px;
+}
