@@ -85,6 +85,8 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 		this.get_stime = function(data) {
 			mm = Math.floor((data/60)%60);
 			hh = Math.floor((data/3600)%60);
+			mm = mm>9?''+mm:'0'+mm;
+			hh = hh>9?''+hh:'0'+hh;
 			return hh+":"+mm;
 		};
 		

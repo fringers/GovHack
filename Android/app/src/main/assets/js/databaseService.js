@@ -125,6 +125,7 @@ app.factory('dbService', function() {
         departmentData.names.push(locData.name);
         departmentData.apiGroups = [];
         departmentData.apiGroups.push(locData.apiGroup);
+		departmentData.dist = distanceBetweenPoints(new point(52.213748, 21.003177), departmentData.localization);
         caseDetails.departments.push(departmentData);
     }
 
