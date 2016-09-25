@@ -473,15 +473,14 @@
           <div id="map" style="min-width: 100%; min-height: 50%"></div>
           <div class="mapDetails">
             <md-content layout-padding>
-                <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!steps">
+                <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!(steps && walkInfo.dist && walkInfo.dur && driveInfo.dur && walkInfo.uberDuration && walkInfo.uberEstimate)">
                     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
                 </div>
 
-                <md-list class="md-dense" ng-cloak ng-show="steps">
+                <md-list class="md-dense" ng-cloak ng-show="steps">               
                     <md-subheader class="md-no-sticky">
                         Odległość: {{walkInfo.dist}}
                     </md-subheader>
-
                     <md-subheader class="md-no-sticky">
                         <md-icon class="material-icons md-secondary">
                             directions_walk
@@ -495,13 +494,20 @@
                         </md-icon>
                         {{driveInfo.dur}}
                     </md-subheader>
-
+                    <md-subheader class="md-no-sticky">
+                        <img style="margin-left: -9px;" width="42" src="http://www.ylakeland.com/wp-content/uploads/2014/12/uber-logo-transparent.png" />
+                        <span style="position: absolute; margin-top: 2px;">
+                          {{walkInfo.uberDuration}} ({{walkInfo.uberEstimate}})
+                        </span>
+                    </md-subheader> 
                     <md-subheader class="md-no-sticky">
                         Komunikacja miejska:
                     </md-subheader>
-                    <md-list-item class="md-3-line" ng-repeat="step in steps">
-                        <img src="{{step.icon}}" />
-                        {{step.short}} o {{step.time}}: {{step.from}} -> {{step.to}}
+                    <md-list-item class="md-3-line" ng-repeat="step in steps" style="margin-bottom: -25px">
+                        <img width="24" src="{{step.icon}}" style="margin-left: -6px" />
+                        <span style="margin-left: 5px; font-size: 13px;">
+                          {{step.short}} o {{step.time}}: {{step.from}} -> {{step.to}}
+                        </span>
                     </md-list-item>
                 </md-list>
             </md-content>

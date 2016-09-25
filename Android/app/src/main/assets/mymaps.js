@@ -161,6 +161,30 @@ var myMaps = {
         });
     },
 
+    getUberPrice: function(start_latitude, start_longitude, end_latitude, end_longitude) {
+        return Promise.resolve(
+            $.ajax({
+                type: "GET",
+                url: "https://sandbox-api.uber.com/v1/estimates/price?start_latitude="+start_latitude+"&start_longitude="+start_longitude+"&end_latitude="+end_latitude+"&end_longitude="+end_longitude,
+                headers : {
+                    "Authorization": "Token KjyHuNgu4tKWwNpg6XetC_ekmMZ_CSmcEq_0TifM"
+                }
+            })
+        )
+    },
+
+    getUberTime: function(start_latitude, start_longitude) {
+        return Promise.resolve(
+            $.ajax({
+                type: "GET",
+                url: "https://sandbox-api.uber.com/v1/estimates/time?start_latitude="+start_latitude+"&start_longitude="+start_longitude,
+                headers : {
+                    "Authorization": "Token KjyHuNgu4tKWwNpg6XetC_ekmMZ_CSmcEq_0TifM"
+                }
+            })
+        )
+    },
+
     getTransitCallback: function(mode, data, callback)
     {
 
