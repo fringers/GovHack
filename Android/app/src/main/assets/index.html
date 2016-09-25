@@ -75,10 +75,7 @@
   
   <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
 
-  <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>-->
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBCfu8xcjwcULhF8Pj2wrLvHEQicqKBais"></script>
-  <script type="text/javascript" src="gmaps.js"></script>
-  <script type="text/javascript" src="mymaps.js"></script>
+  <!--<script src="https://maps.googleapis.com/maps/api/js?key="></script>-->
 
   <script src="js/config.js"></script>
 
@@ -95,7 +92,6 @@
   <script src="js/caseController.js"></script>
   <script src="js/navigateController.js"></script>
   <script src="js/reservationController.js"></script>
-  <script src="js/mapController.js"></script>
 
   <script>
 //      var map;
@@ -321,7 +317,7 @@
                       </md-icon>
                       Termin
                   </md-subheader>
-                  <md-list-item style="font-size: 12px;" ng-show="showDeadline">
+                  <md-list-item style="font-size: 12px;" ng-class="[{visible: showDeadline}, {hidden: !showDeadline}]" ng-show="showDeadline">
                       <p>
                           <md-input-container>
                               <label>Termin:</label>
@@ -338,7 +334,7 @@
                       </md-icon>
                       Twój numer sprawy
                   </md-subheader>
-                  <md-list-item style="font-size: 12px;" ng-show="showCaseNumber" ng-if="editNr">
+                  <md-list-item ng-class="[{visible: showCaseNumber}, {hidden: !showCaseNumber}]" style="font-size: 12px;" ng-show="showCaseNumber" ng-if="editNr">
                       <p>
                           <md-input-container class="md-block" flex-gt-xs>
                               <label>Numer</label>
@@ -347,12 +343,12 @@
                           </md-input-container>
                       </p>
                   </md-list-item>
-                  <md-list-item style="font-size: 12px;" ng-show="showCaseNumber" ng-if="!editNr && userCase.number">
+                  <md-list-item ng-class="[{visible: showCaseNumber}, {hidden: !showCaseNumber}]" style="font-size: 12px;" ng-show="showCaseNumber" ng-if="!editNr && userCase.number">
                       <p ng-if="!editNr && userCase.number" ng-click="editCaseNumber()">
                           {{userCase.number}}
                       </p>
                   </md-list-item>
-                  <md-list-item style="font-size: 12px;" ng-show="showCaseNumber" ng-if="!editNr && !userCase.number">
+                  <md-list-item ng-class="[{visible: showCaseNumber}, {hidden: !showCaseNumber}]" style="font-size: 12px;" ng-show="showCaseNumber" ng-if="!editNr && !userCase.number">
                       <p ng-if="!editNr && !userCase.number" ng-click="editCaseNumber()">
                           <md-button class="md-raised md-primary">dodaj</md-button>
                       </p>
@@ -366,7 +362,7 @@
                       </md-icon>
                       Maksymalny czas oczekiwania
                   </md-subheader>
-                  <md-list-item style="font-size: 12px;" ng-show="showResponseTime">
+                  <md-list-item ng-class="[{visible: showResponseTime}, {hidden: !showResponseTime}]" style="font-size: 12px;" ng-show="showResponseTime">
                       <p> {{case.details.responseTime}} </p>
                   </md-list-item>
 
@@ -378,7 +374,7 @@
                       </md-icon>
                       Wymagane dokumenty
                   </md-subheader>
-                  <md-list-item ng-repeat="doc in case.details.documents" style="font-size: 12px;" ng-show="showDocs">
+                  <md-list-item ng-class="[{visible: showDocs}, {hidden: !showDocs}]" ng-repeat="doc in case.details.documents" style="font-size: 12px;" ng-show="showDocs">
                       <md-checkbox class="md-primary"
                                    ng-model="userCase.documents[doc.id]"
                                    ng-change="saveUserCase()">
@@ -394,7 +390,7 @@
                       </md-icon>
                       Kroki
                   </md-subheader>
-                  <md-list-item ng-repeat="step in case.details.steps" style="font-size: 12px;" ng-show="showSteps">
+                  <md-list-item ng-class="[{visible: showSteps}, {hidden: !showSteps}]" ng-repeat="step in case.details.steps" style="font-size: 12px;" ng-show="showSteps">
                       <md-checkbox class="md-primary"
                                    ng-model="userCase.step[step.id]"
                                    ng-change="saveUserCase()">
@@ -410,7 +406,7 @@
                       </md-icon>
                       Uwagi
                   </md-subheader>
-                  <md-list-item ng-repeat="comment in case.details.comments" style="font-size: 12px;" ng-show="showComments">
+                  <md-list-item ng-class="[{visible: showComments}, {hidden: !showComments}]" ng-repeat="comment in case.details.comments" style="font-size: 12px;" ng-show="showComments">
                       <p> {{$index + 1}}. {{ comment.name }} </p>
                   </md-list-item>
 
@@ -422,7 +418,7 @@
                       </md-icon>
                       Opłaty
                   </md-subheader>
-                  <md-list-item style="font-size: 12px;" ng-show="showPayments">
+                  <md-list-item ng-class="[{visible: showPayments}, {hidden: !showPayments}]" style="font-size: 12px;" ng-show="showPayments">
                       <p> {{case.details.payments}} </p>
                   </md-list-item>
               </md-list>
@@ -467,19 +463,8 @@
   </script>
 
   <script type="text/ng-template" id="map.tpl">
-      <div ng-controller="mapController" layout="column" style="min-width: 100%; min-height: 80%" ng-cloak>
-
-          <div id="map" style="min-width: 100%; min-height: 50%"></div>
-
-          <md-list class="md-dense" ng-cloak>
-              <md-subheader class="md-no-sticky">
-                  Komunikacja miejska:
-              </md-subheader>
-              <md-list-item class="md-3-line" ng-repeat="step in steps">
-                <img src="{{step.icon}}" />
-                  {{step.short}}: {{step.from}} -> {{step.to}} ({{step.time}})
-              </md-list-item>
-          </md-list>
+      <div ng-controller="mapController" layout="column" ng-cloak>
+        mapa
       </div>
   </script>
 
