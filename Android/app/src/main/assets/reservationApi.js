@@ -21,6 +21,7 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 		};
 
 		this.get_Obj = function(trObj, index) {
+			if(typeof trObj.getElementsByClassName('BTN_OK')[index] === 'undefined') return {};
 			var value0 = trObj.getElementsByClassName('BTN_OK')[index].getAttribute('value').split('-');
 			var slot0 = trObj.getElementsByClassName('sloty')[index].innerHTML.split('/');
 			return {
