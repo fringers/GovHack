@@ -6,10 +6,12 @@ app.factory('dbService', function() {
     service._offices = {};
 
     service._userCases = {};
+    service._userReservations = {};
 
     service._onCaseCategoriesLoadedFns = [];
     service._onCasesUpdateFns = [];
     service._onUserCasesLoadedFns = [];
+    service._onUserReservationsLoadedFns = [];
 
     initData();
 
@@ -159,14 +161,49 @@ app.factory('dbService', function() {
         });
     };
 
+    service.loadUserReservations = function() {
+        var user = firebase.auth().currentUser;
+        if(user == null)
+            return;
+
+        firebase.database().ref('/user/' + user.uid + '/reservations/').once('value').then(function (snapshot) {
+            service._userReservations = snapshot.val();
+
+            for(var id in service._userReservations) {
+                var res = service._userReservations[id];
+                res.id = id;
+
+                for(var cid in service._userCases) {
+                    var c = service._userCases[cid];
+                    if(c.id == res.caseId) {
+                        res.case = c;
+                        break;
+                    }
+                }
+            }
+
+            notifyUserReservationsUpdate();
+        });
+    };
+
     function notifyUserCasesUpdate() {
         for(var id in service._onUserCasesLoadedFns) {
             service._onUserCasesLoadedFns[id]();
         }
     }
 
+    function notifyUserReservationsUpdate() {
+        for(var id in service._onUserReservationsLoadedFns) {
+            service._onUserReservationsLoadedFns[id]();
+        }
+    }
+
     service.onUserCasesUpdated = function(fn) {
         service._onUserCasesLoadedFns.push(fn);
+    };
+
+    service.onUserReservationsUpdated = function(fn) {
+        service._onUserReservationsLoadedFns.push(fn);
     };
 
     service.onCaseCategoriesLoaded = function(fn) {
@@ -196,6 +233,18 @@ app.factory('dbService', function() {
        // firebase.database().ref().update(updates);
     };
 
+    service.addUserReservation = function(res) {
+        var user = firebase.auth().currentUser;
+        if(user == null)
+            return;
+
+        var path = '/user/' + user.uid + '/reservations/';
+        var newPostKey = firebase.database().ref().child(path).push().key;
+        firebase.database().ref(path + newPostKey).set(userCase);
+
+        service.loadUserReservations();
+    };
+
     service.updateUserCase = function(uc) {
         var user = firebase.auth().currentUser;
         if(user == null)
@@ -215,7 +264,6 @@ app.factory('dbService', function() {
         firebase.database().ref('/user/' + user.uid + '/cases/' + uc.id).set(null);
 
         service.loadUserCases();
-
     };
 
     function initData() {
