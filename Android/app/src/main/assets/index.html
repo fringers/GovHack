@@ -177,9 +177,9 @@
           <md-content layout-padding>
 
               <md-list>
-                  <md-subheader class="md-no-sticky">
+                  <md-subheader class="md-no-sticky" style="text-align: center;">
                       Posiadasz {{cases.length}} spraw do załatwienia
-                      <md-button class="md-raised md-primary" ng-click="navigate('navigate')">
+                      <md-button class="md-raised md-warn" style="margin-top: 25px;" ng-click="navigate('navigate')">
                           Nawiguj
                       </md-button>
                   </md-subheader>
@@ -249,7 +249,8 @@
 
                           <!--<md-icon md-svg-src="http://image.flaticon.com/icons/svg/148/148744.svg" class="s48" aria-label="Cart"    ></md-icon>-->
 
-                          <img src="{{category.icon}}" style="width: 50%; height: 50%;"/>
+                          <!-- <img src="{{category.icon}}" style="width: 50%; height: 50%;"/> -->
+                          <md-icon class="material-icons" style="font-size: 70px; margin-right: 86px; margin-bottom: 108px;">{{category.icon}}</md-icon>
 
                           <md-grid-tile-footer>
                               <h3>{{category.name}}</h3>
