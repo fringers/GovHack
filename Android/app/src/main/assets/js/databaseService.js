@@ -114,14 +114,16 @@ app.factory('dbService', function() {
             var dep = caseDetails.departments[id];
             if(dep.id == departmentData.id) {
                 dep.names.push(locData.name);
+                dep.apiGroups.push(locData.apiGroup);
                 return;
             }
         }
 
         departmentData.names = [];
         departmentData.names.push(locData.name);
+        departmentData.apiGroups = [];
+        departmentData.apiGroups.push(locData.apiGroup);
         caseDetails.departments.push(departmentData);
-
     }
 
     service.getUserCaseInfo = function(c) {
