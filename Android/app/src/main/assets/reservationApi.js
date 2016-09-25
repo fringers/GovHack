@@ -47,12 +47,12 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 					if(tr.innerHTML.indexOf("<th") > -1) return;
 					if(tr.getElementsByClassName('BTN_OK')[0] == null) return;
 					if(typeof tr.getElementsByClassName('BTN_OK')[0] !== 'undefined' &&
-						!_.isEmpty(tr.getElementsByClassName('sloty')[0])) {
+						!_.isEmpty(tr.getElementsByClassName('sloty')[0].innerHTML)) {
 						var o1 = this.get_Obj(tr,0);
 						if(o1.current<o1.max) array.push(o1);
 					}
 					if(typeof tr.getElementsByClassName('BTN_OK')[1] !== 'undefined' &&
-						!_.isEmpty(tr.getElementsByClassName('sloty')[1])) {
+						!_.isEmpty(tr.getElementsByClassName('sloty')[1].innerHTML)) {
 						var o2 = this.get_Obj(tr,1);
 						if(o2.current<o2.max) array.push(o2);
 					}
