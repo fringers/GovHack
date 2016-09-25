@@ -1,0 +1,91 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "dupa@kroljakub.pl",
+    "longName": "e-obywatel",
+    "projectType": "pebblejs",
+    "resources": {
+        "media": [
+            {
+                "file": "images/menu_icon.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/logo_splash.png",
+                "name": "IMAGE_LOGO_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/tile_splash.png",
+                "name": "IMAGE_TILE_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "fonts/UbuntuMono-Regular.ttf",
+                "name": "MONO_FONT_14",
+                "type": "font"
+            },
+            {
+                "file": "images/up.png",
+                "name": "IMAGES_UP_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/down.png",
+                "name": "IMAGES_DOWN_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/snooze.png",
+                "name": "IMAGES_SNOOZE_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/shopping.png",
+                "name": "IMAGES_SHOPPING_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/pebble1.png",
+                "menuIcon": true,
+                "name": "IMAGES_PEBBLE1_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/new.png",
+                "name": "IMAGES_NEW_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/forward.png",
+                "name": "IMAGES_FORWARD_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/done.png",
+                "name": "IMAGES_DONE_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/cancel.png",
+                "name": "IMAGES_CANCEL_PNG",
+                "type": "bitmap"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "e-obywatel",
+    "targetPlatforms": [
+        "aplite"
+    ],
+    "uuid": "42b73bd7-ded5-41d7-941c-d4ffb896e635",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "hiddenApp": false,
+        "watchface": false
+    }
+}
