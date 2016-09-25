@@ -1,5 +1,5 @@
 
-app.controller('reservationController', function($rootScope, $scope, $mdDialog, dbService) {
+app.controller('userReservationController', function($rootScope, $scope, $mdDialog, dbService) {
 	$rootScope.title = "Twoje rezerwacje";
 
     $scope.cases = loadUserCases();

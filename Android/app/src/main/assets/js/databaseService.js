@@ -306,6 +306,7 @@ app.factory('dbService', function() {
 
             for(var id in service._offices) {
                 service._offices[id].id = id;
+                service._offices[id].dist = distanceBetweenPoints(new point(52.213748, 21.003177), service._offices[id].localization);
             }
 
         });

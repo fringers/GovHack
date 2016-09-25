@@ -27,6 +27,23 @@ function transitRoutSegment(icon, name, short, time, from, to)
     return this;
 }
 
+function distanceBetweenPoints(p1, p2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(p2.lat-p1.lat);  // deg2rad below
+    var dLon = deg2rad(p2.lng-p1.lng);
+    var a =
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(p1.lat)) * Math.cos(deg2rad(p2.lat)) *
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+        ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c; // Distance in km
+    return Math.round(d * 100) / 100;
+}
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
+}
+
 var myMaps = {
     map: null,
     markers: [],
@@ -161,7 +178,10 @@ var myMaps = {
                     segList.push(seg);
                 }
             });
-            callback(segList);
+            callback({
+                dur: data[0].legs[0].duration.text,
+                segLists: segList
+            });
         }
         else {
             var result = {
