@@ -564,7 +564,19 @@
   <script type="text/ng-template" id="settings.tpl">
 	<div ng-controller="settingsController" layout="column" ng-cloak>
 		<md-content layout-padding>
-			Hello {{user.email}}!
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Imię</label>
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nazwisko</label>
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <md-button md-no-ink class="md-primary" ng-click="save()">zapisz</md-button>
+            </div>
 		</md-content>
 	</div>
   </script>

@@ -165,6 +165,24 @@ app.factory('dbService', function() {
             notifyUserCasesUpdate();
         });
     };
+    
+    service.saveUserSetting = function (settings) {
+        var user = firebase.auth().currentUser;
+        if(user == null)
+            return;
+
+        firebase.database().ref('/user/' + user.uid + '/settings/').set(settings);
+    };
+
+    service.getUserSettings = function (callback) {
+        var user = firebase.auth().currentUser;
+        if(user == null)
+            return;
+
+        firebase.database().ref('/user/' + user.uid + '/settings/').once('value').then(function (snapshot) {
+            callback(snapshot.val());
+        });
+    };
 
     service.loadUserReservations = function() {
         var user = firebase.auth().currentUser;
