@@ -91,6 +91,7 @@
   <script src="js/selectCaseController.js"></script>
   <script src="js/caseController.js"></script>
   <script src="js/navigateController.js"></script>
+  <script src="js/reservationController.js"></script>
 
   <script>
 //      var map;
@@ -431,23 +432,71 @@
           <md-content layout-padding>
               <md-list class="md-dense" ng-cloak>
                   <div ng-repeat="item in cases track by item.id">
-                      <md-subheader class="md-no-sticky" ng-click="viewDetails(item)">{{item.name}}</md-subheader>
+                      <md-subheader class="md-no-sticky" ng-click="item.showDeps = !item.showDeps">
+                          <span ng-show="!item.showDeps">+</span>
+                          <span ng-show="item.showDeps">-</span>
+                          {{item.name}}
+                      </md-subheader>
 
-                      <md-list-item class="md-3-line" ng-repeat="dep in item.details.departments track by dep.id">
+                      <md-list-item class="md-3-line" ng-repeat="dep in item.details.departments track by dep.id" ng-show="item.showDeps">
                           <div class="md-list-item-text" layout="column">
                               <h3>{{ dep.name }}</h3>
                               <h4>Osób w kolejce: {{ dep.queueData.liczbaKlwKolejce }}</h4>
                               <p>Aktualny numer: {{ dep.queueData.aktualnyNumer }}</p>
+                              <md-icon class="material-icons md-secondary" ng-click="openMap(dep)">
+                                  navigation
+                              </md-icon>
                           </div>
                       </md-list-item>
 
                       <md-divider></md-divider>
                   </div>
               </md-list>
+
+              <md-button class="md-primary md-fab md-fab-bottom-right" ng-click="makeReservation()">
+                  <md-icon class="material-icons">
+                      event
+                  </md-icon>
+              </md-button>
           </md-content>
       </div>
   </script>
-  
+
+  <script type="text/ng-template" id="map.tpl">
+      <div ng-controller="mapController" layout="column" ng-cloak>
+        mapa
+      </div>
+  </script>
+
+  <script type="text/ng-template" id="reservation.tpl">
+      <div ng-controller="reservationController" layout="column" ng-cloak>
+          <md-content layout-padding>
+              <div layout-gt-sm="row">
+                  <h4 class="md-title">Zarejestruj się w kolejkach do wszystkich spraw</h4>
+              </div>
+              <div layout-gt-sm="row">
+
+                  <md-input-container>
+                      <label>Termin:</label>
+                      <md-datepicker ng-model="date"></md-datepicker>
+                  </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                  <md-input-container style="padding-left: 36px; padding-right: 0;">
+                      <md-icon class="material-icons">
+                          schedule
+                      </md-icon>
+                      <label>Godzina:</label>
+                      <input type="time">
+                  </md-input-container>
+              </div>
+              <div layout-gt-sm="row">
+                  <md-button class="md-raised md-warn">Zarezerwuj</md-button>
+              </div>
+          </md-content>
+      </div>
+  </script>
+
   <script type="text/ng-template" id="settings.tpl">
 	<div ng-controller="settingsController" layout="column" ng-cloak>
 		<md-content layout-padding>

@@ -3,6 +3,8 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
 	$rootScope.title = "Nawigacja";
 
     $scope.viewDetails = viewDetails;
+    $scope.openMap = openMap;
+    $scope.makeReservation = makeReservation;
 
     $scope.cases = loadUserCases();
     dbService.onUserCasesUpdated(function() {
@@ -17,6 +19,16 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
         $rootScope.navigate("caseDetails");
     }
 
+    function openMap(dep) {
+        $rootScope.selectedDep = dep;
+
+        $rootScope.navigate("map");
+    }
+
+    function makeReservation() {
+        $rootScope.navigate("reservation");
+    }
+
     function loadUserCases() {
         var userCases = dbService.getUserCases();
         if(userCases == null)
@@ -27,6 +39,8 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
             var c = dbService.getCaseById(userCases[id].case);
             if(c == null)
                 continue;
+
+            c.showDeps = false;
 
             dbService.getDetailsForCase(c, function() {
 
@@ -52,6 +66,7 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
     function calculateQueues() {
         for(var id in $scope.cases) {
             var c = $scope.cases[id];
+
             for(var depId in c.details.departments) {
                 var dep = c.details.departments[depId];
 
@@ -61,7 +76,7 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
     }
 
     function getQueue(dep) {
-        
+
         $.get('https://api.um.warszawa.pl/api/action/wsstore_get/?id=' + dep.queueId)
             .done(function(data) {
                 //console.log(data);

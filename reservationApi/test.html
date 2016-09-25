@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.1/lodash.js"></script>
+  <script type='text/javascript' src="reservationApi.js"></script>
+  <script type="text/javascript">
+  
+	var case1 = new caseO(1, "http://udbialoleka.rezerwacje.um.warszawa.pl/ajaxcall.php", 1);
+	var case2 = new caseO(2, "http://udbialoleka.rezerwacje.um.warszawa.pl/ajaxcall.php", 5);
+	var cases = [case1,case2]
+	var day = new Date(2016, 09, 29).getTime(); //YYYY, mm, dd
+	var timeFrom = 39360; // ilosc sekund po polnocy
+
+	var resultCallBack = function (res){
+		console.log(res);
+	}
+  
+	findBestReservations(day, timeFrom, cases, resultCallBack);
+
+  
+  </script>
+</head>
+<body>
+
+</body>
+</html>
