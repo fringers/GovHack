@@ -465,6 +465,26 @@
   <script type="text/ng-template" id="map.tpl">
       <div ng-controller="mapController" layout="column" ng-cloak>
         mapa
+      <div ng-controller="mapController" layout="column" style="min-width: 100%; min-height: 80%" ng-cloak>
+
+          <div id="map" style="min-width: 100%; min-height: 50%"></div>
+
+          <md-content layout-padding>
+              <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!steps">
+                  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+              </div>
+
+              <md-list class="md-dense" ng-cloak ng-show="steps">
+                  <md-subheader class="md-no-sticky">
+                      Komunikacja miejska:
+                  </md-subheader>
+                  <md-list-item class="md-3-line" ng-repeat="step in steps">
+                      <img src="{{step.icon}}" />
+                      {{step.short}} o {{step.time}}: {{step.from}} -> {{step.to}}
+                  </md-list-item>
+              </md-list>
+          </md-content>
+
       </div>
   </script>
 
