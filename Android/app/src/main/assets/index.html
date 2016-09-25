@@ -467,11 +467,16 @@
                   </div>
               </md-list>
 
-              <md-button class="md-primary md-fab md-fab-bottom-right" ng-click="makeReservation()">
+              <div>
+                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                  <md-button ng-click="makeReservation()" class="md-raised md-warn" style="top: auto; right: 85px; bottom: 31px; left: auto;position: fixed;">Rezerwacja</md-button>
+                </section>
+                <md-button class="md-primary md-fab md-fab-bottom-right" ng-click="makeReservation()">
                   <md-icon class="material-icons">
                       event
                   </md-icon>
-              </md-button>
+                </md-button>
+              </div>
           </md-content>
       </div>
   </script>
@@ -500,7 +505,9 @@
                         <md-icon class="material-icons md-secondary">
                             drive_eta
                         </md-icon>
-                        {{driveInfo.dur}}
+                        <span style="margin-left: 3px;">
+                          {{driveInfo.dur}}
+                        </span>
                     </md-subheader>
                     <md-subheader class="md-no-sticky">
                         <img style="margin-left: -9px;" width="42" src="http://www.ylakeland.com/wp-content/uploads/2014/12/uber-logo-transparent.png" />
