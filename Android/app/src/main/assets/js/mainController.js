@@ -5,7 +5,7 @@ app.controller('mainController', function($rootScope, $scope, $mdDialog, dbServi
     $scope.cases = loadUserCases();
     $scope.remove = remove;
     $scope.viewDetails = viewDetails;
-
+    $scope.cases.show = false;
     dbService.onUserCasesUpdated(function() {
         $scope.cases = loadUserCases();
         if (!$scope.$$phase)
@@ -39,6 +39,7 @@ app.controller('mainController', function($rootScope, $scope, $mdDialog, dbServi
                 setTimeout(function() {
                     if (!$scope.$$phase)
                         $scope.$apply();
+                    $scope.cases.show = true;
                 }, 500);
             });
 

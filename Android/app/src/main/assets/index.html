@@ -175,7 +175,9 @@
   <script type="text/ng-template" id="main.tpl">
       <div ng-controller="mainController" layout="column" ng-cloak>
           <md-content layout-padding>
-
+              <div layout="row" layout-sm="column" layout-align="space-around" ng-show="!(cases.show)">
+                  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+              </div>
               <md-list>
                   <md-subheader class="md-no-sticky" style="text-align: center;">
                       Posiadasz {{cases.length}} spraw do załatwienia
