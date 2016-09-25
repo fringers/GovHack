@@ -33,6 +33,14 @@
             </md-button>
             <md-menu-content width="4">
                 <md-menu-item>
+                    <md-button ng-click="navigate('userReservations')">
+                        <md-icon class="material-icons">
+                            insert_invitation
+                        </md-icon>
+                        Twoje rezerwacje
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
                   <md-button ng-click="navigate('settings')">
                      <md-icon class="material-icons">
                         settings
@@ -540,10 +548,14 @@
   <script type="text/ng-template" id="userReservations.tpl">
       <div ng-controller="userReservationsController" layout="column" ng-cloak>
           <md-content layout-padding>
-              <md-list class="md-dense" ng-cloak ng-show="steps">
-                  <div ng-repeat="item in reservations">
-
-                  </div>
+              <md-list class="md-dense" ng-cloak>
+                  <md-list-item class="md-3-line" ng-repeat="item in reservations">
+                      <div class="md-list-item-text" layout="column">
+                          <h3>{{item.case.name}}</h3>
+                          <h4>Rezerwacja w dniu: {{item.date}}</h4>
+                          <p>od {{item.from}} do {{item.to}}</p>
+                      </div>
+                  </md-list-item>
               </md-list>
           </md-content>
       </div>

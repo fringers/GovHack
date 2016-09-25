@@ -145,6 +145,10 @@ app.factory('dbService', function() {
         return service._userCases;
     };
 
+    service.getUserReservations = function() {
+        return service._userReservations;
+    };
+
     service.loadUserCases = function() {
         var user = firebase.auth().currentUser;
         if(user == null)
@@ -173,8 +177,8 @@ app.factory('dbService', function() {
                 var res = service._userReservations[id];
                 res.id = id;
 
-                for(var cid in service._userCases) {
-                    var c = service._userCases[cid];
+                for(var cid in service._cases) {
+                    var c = service._cases[cid];
                     if(c.id == res.caseId) {
                         res.case = c;
                         break;
@@ -240,7 +244,7 @@ app.factory('dbService', function() {
 
         var path = '/user/' + user.uid + '/reservations/';
         var newPostKey = firebase.database().ref().child(path).push().key;
-        firebase.database().ref(path + newPostKey).set(userCase);
+        firebase.database().ref(path + newPostKey).set(res);
 
         service.loadUserReservations();
     };
