@@ -120,8 +120,8 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 			var curBestId = null;
 			for (var i = 0; i < ids.length; i++) 
 			{
-				if(_.isEmpty(reservationsData[ids[i]][0])) {
-					resultCallBack("err");
+				if(typeof reservationsData[ids[i]][0] === 'undefined') {
+					resultCallBack(result);
 					return;
 				}
 				if(curBestId == null || reservationsData[ids[i]][0]['from'] < reservationsData[curBestId][0]['from'])
