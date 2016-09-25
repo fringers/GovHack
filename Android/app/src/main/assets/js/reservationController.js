@@ -31,6 +31,20 @@ app.controller('reservationController', function($rootScope, $scope, $mdDialog, 
         var timeFrom = $scope.time.getHours() * 60 * 60 + $scope.time.getMinutes() * 60; // ilosc sekund po polnocy
 
         findBestReservations(day, timeFrom, toRegister, function(result) {
+            if(result == "err")
+            {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title('Błąd!')
+                        .textContent('Nie da się zareserwować na wybrany dzień')
+                        .ariaLabel('error')
+                        .ok('Ok')
+                );
+
+                return;
+            }
+
             for(var id in result) {
                 var res = result[id];
                 res.date = $scope.date.getFullYear() + "-" +  $scope.date.getMonth() + "-" + $scope.date.getDate();
