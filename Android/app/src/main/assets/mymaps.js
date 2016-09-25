@@ -52,12 +52,13 @@ var myMaps = {
            map = new GMaps(params);
         },
 
-    addMarker: function(point, title)
+    addMarker: function(point, title, icon)
         {
         var tmp = map.addMarker({
             lat: point.lat,
             lng: point.lng,
             title: title,
+            icon: icon
         });
         this.markers.push(tmp);
         return tmp;
@@ -106,11 +107,14 @@ var myMaps = {
     	});
     },
 
-    geolocate: function()
+    geolocate: function(center, callback)
     {
         GMaps.geolocate({
             success: function(position) {
-                map.setCenter(position.coords.latitude, position.coords.longitude);
+                if(center)
+                   this.center({lat: position.coords.latitude, lng: position.coords.longitude});
+                if(callback)
+                    callback({lat: position.coords.latitude, lng: position.coords.longitude});
             },
             error: function(error) {
                 ;//alert('Geolocation failed: '+error.message);
@@ -124,16 +128,23 @@ var myMaps = {
         });
     },
 
-    getTransit: function(){
+    center: function(loc) {
+        map.setCenter(loc.lat, loc.lng);
+    },
+
+    getTransit: function(from, to, callback){
+        var that = this;
         var route = map.getRoutes({
-            origin: [52.213663, 21.003197],
-            destination: [52, 21],
+            origin: [from.lat, from.lng],
+            destination: [to.lat, to.lng],
             travelMode: 'transit',
-            callback: this.getTransitCallback
+            callback: function(data) {
+                that.getTransitCallback(data, callback);
+            }
         });
     },
 
-    getTransitCallback: function(data)
+    getTransitCallback: function(data, callback)
     {
         segList = []
         data[0].legs[0].steps.forEach(function(step) {
@@ -149,7 +160,8 @@ var myMaps = {
             segList.push(seg);
         }
         });
-        console.log(segList);
+
+        callback(segList);
     }
 
 }
