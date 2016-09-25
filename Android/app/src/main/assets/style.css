@@ -44,3 +44,14 @@
 md-virtual-repeat-container {
 	min-height: 150px;
 }
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s linear;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
