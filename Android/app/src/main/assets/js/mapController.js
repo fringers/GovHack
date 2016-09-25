@@ -20,7 +20,8 @@ app.controller('mapController', function($rootScope, $scope, $mdDialog) {
         }
 
         myMaps.init();
-        myMaps.geolocate(false, onLocationFound);
+        //myMaps.geolocate(false, onLocationFound);
+        onLocationFound({lat: 52.2220944, lng: 21.0137917});
 
         $scope.department.marker = myMaps.addMarker(new point($scope.department.localization.lat, $scope.department.localization.lng), $scope.department.name);
         myMaps.center({lat: $scope.department.localization.lat, lng: $scope.department.localization.lng});
@@ -39,6 +40,20 @@ app.controller('mapController', function($rootScope, $scope, $mdDialog) {
             if (!$scope.$$phase)
                 $scope.$apply();
         });
+
+        myMaps.getTransit(loc, {lat: $scope.department.localization.lat, lng: $scope.department.localization.lng}, function(result) {
+            $scope.walkInfo = result;
+
+            if (!$scope.$$phase)
+                $scope.$apply();
+        }, 'walking');
+
+        myMaps.getTransit(loc, {lat: $scope.department.localization.lat, lng: $scope.department.localization.lng}, function(result) {
+            $scope.driveInfo = result;
+
+            if (!$scope.$$phase)
+                $scope.$apply();
+        }, 'driving');
     }
 });
 

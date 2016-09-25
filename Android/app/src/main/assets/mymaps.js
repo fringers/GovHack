@@ -132,36 +132,44 @@ var myMaps = {
         map.setCenter(loc.lat, loc.lng);
     },
 
-    getTransit: function(from, to, callback){
+    getTransit: function(from, to, callback, mode="transit"){
         var that = this;
         var route = map.getRoutes({
             origin: [from.lat, from.lng],
             destination: [to.lat, to.lng],
-            travelMode: 'transit',
+            travelMode: mode,
             callback: function(data) {
-                that.getTransitCallback(data, callback);
+                that.getTransitCallback(mode, data, callback);
             }
         });
     },
 
-    getTransitCallback: function(data, callback)
+    getTransitCallback: function(mode, data, callback)
     {
-        segList = []
-        data[0].legs[0].steps.forEach(function(step) {
-        if(step.travel_mode == "TRANSIT")
-        {
-            icon = step.transit.line.vehicle.icon;
-            name = step.transit.line.vehicle.name;
-            short = step.transit.line.short_name;
-            time = step.transit.arrival_time.text;
-            from = step.transit.arrival_stop.name;
-            to = step.transit.departure_stop.name;
-            var seg = new transitRoutSegment(icon, name, short, time, from, to);
-            segList.push(seg);
-        }
-        });
 
-        callback(segList);
+        if(mode == 'transit') {
+            segList = [];
+            data[0].legs[0].steps.forEach(function (step) {
+                if (step.travel_mode == "TRANSIT") {
+                    icon = step.transit.line.vehicle.icon;
+                    name = step.transit.line.vehicle.name;
+                    short = step.transit.line.short_name;
+                    time = step.transit.arrival_time.text;
+                    from = step.transit.arrival_stop.name;
+                    to = step.transit.departure_stop.name;
+                    var seg = new transitRoutSegment(icon, name, short, time, from, to);
+                    segList.push(seg);
+                }
+            });
+            callback(segList);
+        }
+        else {
+            var result = {
+                dist: data[0].legs[0].distance.text,
+                dur: data[0].legs[0].duration.text
+            };
+            callback(result);
+        }
     }
 
 }
