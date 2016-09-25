@@ -34,7 +34,7 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 		this.getReservationsList = function(c_case) {
 			$.ajax({
 				type: "GET",
-				url: "http://robi24.cal24.pl/robi24/grab.php?test="+c_case.endPoint+"&day="+this.day+"&group=" + c_case.apiGroup,
+				url: "http://robi24.cal24.pl/robi24/grab.php?test="+c_case.endPoint+"&day="+this.day/1000+"&group=" + c_case.apiGroup,
 			})
 			.done(data => {
 				var xmlString = data
@@ -46,11 +46,13 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 				_.forEach(trs, tr => {
 					if(tr.innerHTML.indexOf("<th") > -1) return;
 					if(tr.getElementsByClassName('BTN_OK')[0] == null) return;
-					if(typeof tr.getElementsByClassName('BTN_OK')[0] !== 'undefined') {
+					if(typeof tr.getElementsByClassName('BTN_OK')[0] !== 'undefined' &&
+						!_.isEmpty(tr.getElementsByClassName('sloty')[0])) {
 						var o1 = this.get_Obj(tr,0);
 						if(o1.current<o1.max) array.push(o1);
 					}
-					if(typeof tr.getElementsByClassName('BTN_OK')[1] !== 'undefined') {
+					if(typeof tr.getElementsByClassName('BTN_OK')[1] !== 'undefined' &&
+						!_.isEmpty(tr.getElementsByClassName('sloty')[1])) {
 						var o2 = this.get_Obj(tr,1);
 						if(o2.current<o2.max) array.push(o2);
 					}
@@ -118,6 +120,10 @@ function findBestReservations(day, fromTime, cases, resultCallBack)
 			var curBestId = null;
 			for (var i = 0; i < ids.length; i++) 
 			{
+				if(_.isEmpty(reservationsData[ids[i]][0])) {
+					resultCallBack("err");
+					return;
+				}
 				if(curBestId == null || reservationsData[ids[i]][0]['from'] < reservationsData[curBestId][0]['from'])
 					curBestId = ids[i];
 			}

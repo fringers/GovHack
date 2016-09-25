@@ -25,7 +25,7 @@ app.controller('reservationController', function($rootScope, $scope, $mdDialog, 
         }
 
         var y = $scope.date.getFullYear();
-        var m = $scope.date.getMonth() + 1;
+        var m = $scope.date.getMonth();
         var d = $scope.date.getDate();
         var day = new Date(y, m, d).getTime();
         var timeFrom = $scope.time.getHours() * 60 * 60 + $scope.time.getMinutes() * 60; // ilosc sekund po polnocy
