@@ -41,15 +41,8 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
                 continue;
 
             c.showDeps = false;
-
             dbService.getDetailsForCase(c, function() {
-
                 calculateQueues();
-
-                setTimeout(function() {
-                    if (!$scope.$$phase)
-                        $scope.$apply();
-                }, 500);
             });
 
             c.userCase = userCases[id];
@@ -64,24 +57,25 @@ app.controller('navigateController', function($rootScope, $scope, $mdDialog, dbS
     }
 
     function calculateQueues() {
+        var array = [];
         for(var id in $scope.cases) {
             var c = $scope.cases[id];
 
             for(var depId in c.details.departments) {
                 var dep = c.details.departments[depId];
-
-                getQueue(dep);
+                array.push(getQueue(dep));
             }
         }
+        Promise.all(array).then(data => {
+            if (!$scope.$$phase) $scope.$apply();
+        });
     }
 
     function getQueue(dep) {
-
-        $.get('https://api.um.warszawa.pl/api/action/wsstore_get/?id=' + dep.queueId)
-            .done(function(data) {
-                //console.log(data);
-                parseQueue(dep, data);
-            });
+        return Promise.resolve($.get('https://api.um.warszawa.pl/api/action/wsstore_get/?id=' + dep.queueId))
+        .then(data => {
+            parseQueue(dep, data);
+        });
     }
 
     function parseQueue(dep, data) {
