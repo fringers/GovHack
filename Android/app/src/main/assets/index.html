@@ -33,6 +33,14 @@
             </md-button>
             <md-menu-content width="4">
                 <md-menu-item>
+                    <md-button ng-click="navigate('userReservations')">
+                        <md-icon class="material-icons">
+                            insert_invitation
+                        </md-icon>
+                        Twoje rezerwacje
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
                   <md-button ng-click="navigate('settings')">
                      <md-icon class="material-icons">
                         settings
@@ -444,9 +452,9 @@
                           {{item.name}}
                       </md-subheader>
 
-                      <md-list-item ng-class="['md-3-line', {visible: item.showDeps}, {hidden: !item.showDeps}]" ng-repeat="dep in item.details.departments track by dep.id" ng-show="item.showDeps">
+                      <md-list-item ng-class="['md-3-line', {visible: item.showDeps}, {hidden: !item.showDeps}]" ng-repeat="dep in item.details.departments  | orderBy: 'dist' track by dep.id" ng-show="item.showDeps">
                           <div class="md-list-item-text" layout="column">
-                              <h3>{{ dep.name }}</h3>
+                              <h3>{{ dep.name }} (<b>{{ dep.dist }} km</b>)</h3>
                               <h4>Osób w kolejce: {{ dep.queueData.liczbaKlwKolejce }}</h4>
                               <p>Aktualny numer: {{ dep.queueData.aktualnyNumer }}</p>
                               <md-icon class="material-icons md-secondary" ng-click="openMap(dep)">
@@ -501,7 +509,7 @@
                         </span>
                     </md-subheader> 
                     <md-subheader class="md-no-sticky">
-                        Komunikacja miejska:
+                        Komunikacja miejska {{stepsDur}}:
                     </md-subheader>
                     <md-list-item class="md-3-line" ng-repeat="step in steps" style="margin-bottom: -25px">
                         <img width="24" src="{{step.icon}}" style="margin-left: -6px" />
@@ -546,10 +554,14 @@
   <script type="text/ng-template" id="userReservations.tpl">
       <div ng-controller="userReservationsController" layout="column" ng-cloak>
           <md-content layout-padding>
-              <md-list class="md-dense" ng-cloak ng-show="steps">
-                  <div ng-repeat="item in reservations">
-
-                  </div>
+              <md-list class="md-dense" ng-cloak>
+                  <md-list-item class="md-3-line" ng-repeat="item in reservations">
+                      <div class="md-list-item-text" layout="column">
+                          <h3>{{item.case.name}}</h3>
+                          <h4>Rezerwacja w dniu: {{item.date}}</h4>
+                          <p>od {{item.from}} do {{item.to}}</p>
+                      </div>
+                  </md-list-item>
               </md-list>
           </md-content>
       </div>
@@ -558,7 +570,21 @@
   <script type="text/ng-template" id="settings.tpl">
 	<div ng-controller="settingsController" layout="column" ng-cloak>
 		<md-content layout-padding>
-			Hello {{user.email}}!
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Imię</label>
+                    <input ng-model="settings.firstName">
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Nazwisko</label>
+                    <input ng-model="settings.lastName">
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <md-button md-no-ink class="md-primary" ng-click="save()">zapisz</md-button>
+            </div>
 		</md-content>
 	</div>
   </script>

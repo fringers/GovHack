@@ -125,6 +125,7 @@ app.factory('dbService', function() {
         departmentData.names.push(locData.name);
         departmentData.apiGroups = [];
         departmentData.apiGroups.push(locData.apiGroup);
+		departmentData.dist = distanceBetweenPoints(new point(52.213748, 21.003177), departmentData.localization);
         caseDetails.departments.push(departmentData);
     }
 
@@ -145,6 +146,10 @@ app.factory('dbService', function() {
         return service._userCases;
     };
 
+    service.getUserReservations = function() {
+        return service._userReservations;
+    };
+
     service.loadUserCases = function() {
         var user = firebase.auth().currentUser;
         if(user == null)
@@ -160,6 +165,24 @@ app.factory('dbService', function() {
             notifyUserCasesUpdate();
         });
     };
+    
+    service.saveUserSetting = function (settings) {
+        var user = firebase.auth().currentUser;
+        if(user == null)
+            return;
+
+        firebase.database().ref('/user/' + user.uid + '/settings/').set(settings);
+    };
+
+    service.getUserSettings = function (callback) {
+        var user = firebase.auth().currentUser;
+        if(user == null)
+            return;
+
+        firebase.database().ref('/user/' + user.uid + '/settings/').once('value').then(function (snapshot) {
+            callback(snapshot.val());
+        });
+    };
 
     service.loadUserReservations = function() {
         var user = firebase.auth().currentUser;
@@ -173,8 +196,8 @@ app.factory('dbService', function() {
                 var res = service._userReservations[id];
                 res.id = id;
 
-                for(var cid in service._userCases) {
-                    var c = service._userCases[cid];
+                for(var cid in service._cases) {
+                    var c = service._cases[cid];
                     if(c.id == res.caseId) {
                         res.case = c;
                         break;
@@ -240,7 +263,7 @@ app.factory('dbService', function() {
 
         var path = '/user/' + user.uid + '/reservations/';
         var newPostKey = firebase.database().ref().child(path).push().key;
-        firebase.database().ref(path + newPostKey).set(userCase);
+        firebase.database().ref(path + newPostKey).set(res);
 
         service.loadUserReservations();
     };

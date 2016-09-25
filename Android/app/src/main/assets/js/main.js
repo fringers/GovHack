@@ -22,7 +22,7 @@ app.controller('indexController', function($rootScope, $scope, $mdSidenav, dbSer
 		
 		$rootScope.navigationHistory = [];
 		
-		$rootScope.navigate = function(url, canGoBack) {
+		$rootScope.navigate = function(url, canGoBack, backTo) {
 			if(canGoBack == undefined)
 				canGoBack = true;
 
@@ -31,6 +31,9 @@ app.controller('indexController', function($rootScope, $scope, $mdSidenav, dbSer
 			}
 			else {
 				$rootScope.navigationHistory = [];
+
+                if(backTo)
+                    $rootScope.navigationHistory.push(backTo+ ".tpl");
 			}
 			
 			$rootScope.currentTemplate = url + ".tpl";

@@ -51,6 +51,8 @@ app.controller('reservationController', function($rootScope, $scope, $mdDialog, 
 
                 dbService.addUserReservation(res);
             }
+
+            $rootScope.navigate('userReservations', false, 'main');
         });
     }
 
