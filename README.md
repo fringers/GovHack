@@ -1,7 +1,6 @@
-[https://fringers.pl/blog/20160925_hackathon-gov-dane-publiczne](https://fringers.pl/blog/20160925_hackathon-gov-dane-publiczne)
-
 # GovHack
 
+[https://fringers.pl/blog/20160925_hackathon-gov-dane-publiczne](https://fringers.pl/blog/20160925_hackathon-gov-dane-publiczne)
 
 Copyright 2016, Fabian Kapuscik, Jakub Król, Robert Kuna, Aleksander Surman
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
