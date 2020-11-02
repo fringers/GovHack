@@ -1,3 +1,5 @@
+[https://fringers.pl/blog/20160925_hackathon-gov-dane-publiczne](https://fringers.pl/blog/20160925_hackathon-gov-dane-publiczne)
+
 # GovHack
 
 
